@@ -58,6 +58,33 @@ ansible-playbook provision_corvus.yml
 --------------
 
 ```
+ansible -m setup corvus1 -a 'filter=ansible_eth1'
+```
+
+Locate the ipv4 address of corvus.
+
+```
+"ipv4": {
+    "address": "10.55.0.8",
+    "broadcast": "10.55.0.255",
+    "netmask": "255.255.255.0",
+    "network": "10.55.0.0"
+},
+```
+
+Now you can use any redis test tool such as redis-benchmark:
+
+```
+redis-benchmark -h 10.55.0.8 -p 12345 -t set,get -n 100000 -c 20
+```
+
+Note corvus runs on port 12345 by default, it can be changed.
+
+Note that not all redis commands are supported by corvus, their readme has more information.
+
+There is also a very simple test script available for PHP that tests phpredis against corvus:
+
+```
 ansible-playbook provision_redis_test.yml
 vagrant ssh redistest
 php redis-test.php
