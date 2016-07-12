@@ -1,6 +1,6 @@
 ---
-- include: set_hosts.yml
-
 - hosts: redis
   roles:
     - redis_cluster_node
+  tasks:
+    - include: tasks/set_hosts.yml

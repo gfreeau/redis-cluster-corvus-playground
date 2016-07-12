@@ -1,10 +1,8 @@
----
-- include: set_hosts.yml
-
 - hosts: redistest
   roles:
     - dotdeb
   tasks:
+    - include: tasks/set_hosts.yml
     - name: 'Install packages'
       apt: pkg={{ item }} state=latest update_cache=yes
       with_items:
