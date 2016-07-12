@@ -1,0 +1,5 @@
+---
+- hosts: redis1
+  tasks:
+    - name: Create cluster config script
+      template: src=templates/create_cluster dest={{ ansible_env.HOME}}

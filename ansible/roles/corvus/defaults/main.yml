@@ -1,0 +1,6 @@
+---
+corvus_install_path: /opt/corvus
+corvus_src_path: '{{ ansible_env.HOME}}/corvus'
+corvus_port: 12345
+corvus_user: vagrant
+corvus_group: vagrant

@@ -1,0 +1,49 @@
+---
+- block:
+  - name: Install packages
+    apt: pkg={{ item }} state=latest update_cache=yes
+    with_items:
+      - build-essential
+      - autoconf
+      - git
+      - supervisor
+
+  - name: Upload supervisor config
+    template: src=supervisor dest=/etc/supervisor/conf.d/corvus.conf
+    notify: restart supervisor
+
+  - name: Start supervisor
+    service: name=supervisor state=started enabled=yes
+
+  - name: Create corvus directory
+    file: path={{ corvus_install_path }} state=directory owner={{ corvus_user }} group={{ corvus_group }}
+
+  become: true
+
+- name: Clone source
+  git: repo=https://github.com/eleme/corvus.git dest={{ corvus_src_path }}
+  register: corvus_git_clone
+
+- name: Build source
+  shell: '{{ item }}'
+  args:
+    chdir: '{{ corvus_src_path }}'
+  with_items:
+    - 'git submodule update --init'
+    - 'make deps'
+    - 'make'
+  when: corvus_git_clone.changed
+
+- name: Create directories
+  file: path='{{ corvus_install_path }}/{{ item }}' state=directory
+  with_items:
+    - conf
+    - bin
+    - log
+
+- name: Install new binary
+  copy: src='{{ corvus_src_path }}/src/corvus' dest='{{ corvus_install_path }}/bin/corvus' remote_src=True mode=0755
+
+- name: Upload corvus config
+  template: src=corvus.conf dest='{{ corvus_install_path }}/conf'
+  notify: restart supervisor

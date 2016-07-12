@@ -1,0 +1,37 @@
+---
+# Read the redis cluster tutorial for more information
+# http://redis.io/topics/cluster-tutorial
+
+- block:
+  - name: Install redis
+    apt: pkg={{ item }} state=latest update_cache=yes
+    with_items:
+      - redis-server
+      - redis-tools # contains redis-trib.rb for cluster config
+
+  - name: Start redis
+    service: name=redis-server state=started enabled=yes
+
+  - name: Update redis config
+    lineinfile: dest={{ redis_cluster_node_config_file }}
+      regexp='^{{ item.name }}'
+      line='{{ item.name }} {{ item.value }}'
+      state=present
+    with_items:
+      - { name: 'bind',                 value: '{{ redis_cluster_node_bind_address }}' }
+      - { name: 'cluster-enabled',      value: 'yes' }
+      - { name: 'cluster-config-file',  value: 'nodes.conf' }
+      - { name: 'cluster-node-timeout', value: '5000' }
+      - { name: 'appendonly',           value: 'yes' }
+    notify: restart redis
+
+  - name: install ruby gems
+    apt: pkg=rubygems state=present
+
+  - name: install redis ruby library
+    gem: name=redis state=latest user_install=no
+
+  - name: Make redis-trib.rb executeable
+    copy: src=/usr/share/doc/redis-tools/examples/redis-trib.rb dest=/usr/local/bin/ remote_src=True mode=0755 owner=root group=root
+
+  become: true

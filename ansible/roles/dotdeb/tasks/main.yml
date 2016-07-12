@@ -1,0 +1,16 @@
+---
+- block:
+  - name: Get gpg key
+    apt_key: url=https://www.dotdeb.org/dotdeb.gpg state=present
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
+
+  - name: Create dotdeb.list
+    shell: printf "deb http://packages.dotdeb.org jessie all\ndeb-src http://packages.dotdeb.org jessie all\n" > /etc/apt/sources.list.d/dotdeb.list
+    args:
+      creates: /etc/apt/sources.list.d/dotdeb.list
+    when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
+
+  - name: Update APT cache
+    apt: update_cache=yes cache_valid_time=3600
+
+  become: true

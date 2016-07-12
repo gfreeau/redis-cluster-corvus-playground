@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: true
+  vars_prompt:
+    - name: "country"
+      prompt: "what is your country?"
+      default: "Canada" # can change to Vietnam at the prompt
+  tasks:
+    - apt: pkg=netselect-apt update_cache=yes state=present
+
+    - command: "netselect-apt -c {{ country }} -t 15"
+      args:
+        creates: sources.list
+
+    - copy: src=sources.list remote_src=yes dest=/etc/apt/sources.list backup=yes
+
+    - file: path=sources.list state=absent
+
+    - apt: update_cache=yes

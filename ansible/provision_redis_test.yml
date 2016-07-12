@@ -1,0 +1,16 @@
+---
+- include: set_hosts.yml
+
+- hosts: redistest
+  roles:
+    - dotdeb
+  tasks:
+    - name: 'Install packages'
+      apt: pkg={{ item }} state=latest update_cache=yes
+      with_items:
+        - php5-cli
+        - php5-redis
+        - redis-tools
+      become: true
+    - name: Copy test script
+      template: src=templates/redis-test.php dest={{ ansible_env.HOME}}

@@ -1,0 +1,3 @@
+---
+redis_cluster_node_config_file: /etc/redis/redis.conf
+redis_cluster_node_bind_address: 0.0.0.0

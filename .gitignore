@@ -1,0 +1,5 @@
+.vagrant
+.idea
+ansible/.fact_cache
+vagrant_ansible_inventory
+ansible/**/*.dist

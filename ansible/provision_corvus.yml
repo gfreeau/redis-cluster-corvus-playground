@@ -1,0 +1,6 @@
+---
+- include: set_hosts.yml
+
+- hosts: corvus
+  roles:
+    - corvus
