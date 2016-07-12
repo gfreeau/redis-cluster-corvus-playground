@@ -31,17 +31,16 @@ foreach($redisFactories as $keyPrefix => $factory) {
 
   $redis = $factory(CORVUS_HOST, CORVUS_PORT);
 
-
   for ($i = 1; $i <= KEYS_PER_TEST; $i++) {
     $key = sprintf('%s_key_%d', $keyPrefix, $i);
-    echo sprintf("incrementing %s\n", $key);
+    echo sprintf("incrementing %s %d times\n", $key, INCREMENT_TIMES);
     $redis->delete($key); //reset value
 
     for ($j = 1; $j <= INCREMENT_TIMES; $j++) {
       $redis->incr($key);
     }
 
-    echo sprintf("%s: %d\n", $key, $redis->get($key));
+    echo sprintf("%s has a value of %d\n", $key, $redis->get($key));
   }
 
   unset($redis);
