@@ -36,7 +36,7 @@
   become: true
 
 - name: Clone source
-  git: repo=https://github.com/eleme/corvus.git dest={{ corvus_src_path }}
+  git: repo=https://github.com/eleme/corvus.git dest={{ corvus_src_path }} version={{ corvus_version }}
   register: corvus_git_clone
 
 - name: Build source

@@ -1,8 +1,9 @@
 ---
+corvus_version: 'v0.2.4' # use 'master' for latest
 corvus_install_path: /opt/corvus
 corvus_src_path: '{{ ansible_env.HOME}}/corvus'
 corvus_port: 12345
 corvus_user: vagrant
 corvus_group: vagrant
 corvus_num_threads: 2
-corvus_max_open_files: 102400
+corvus_max_open_files: 204800

@@ -1,7 +1,7 @@
 ---
 - hosts: corvus
   roles:
-    - common
+    - { role: common, common_max_open_files: 307200 }
     - corvus
   tasks:
     - include: tasks/set_hosts.yml
