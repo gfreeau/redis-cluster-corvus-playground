@@ -18,6 +18,13 @@
   - name: Create corvus directory
     file: path={{ corvus_install_path }} state=directory owner={{ corvus_user }} group={{ corvus_group }}
 
+  - name: Set kernel parameters
+    sysctl: name={{ item.name }} value={{ item.value }} state=present
+    with_items:
+      - { name: 'net.core.somaxconn', value: '1024' }
+      - { name: 'net.ipv4.tcp_tw_recycle', value: '1' }
+    notify: restart supervisor
+
   become: true
 
 - name: Clone source

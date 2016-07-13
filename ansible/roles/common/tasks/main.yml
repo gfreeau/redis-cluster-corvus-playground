@@ -1,0 +1,5 @@
+---
+- name: Set fs.file-max kernel parameter
+  sysctl: name=fs.file-max value={{ common_max_open_files }} state=present
+  when: common_max_open_files
+  become: true

@@ -1,6 +1,7 @@
 ---
 - hosts: corvus
   roles:
+    - common
     - corvus
   tasks:
     - include: tasks/set_hosts.yml

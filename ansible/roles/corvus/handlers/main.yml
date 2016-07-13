@@ -1,4 +1,6 @@
 ---
+# there is a problem with systemd restart and supervisor in the current version
+# http://stackoverflow.com/questions/32738415/supervisor-fails-to-restart-half-of-the-time
 - name: restart supervisor
-  service: name=supervisor state=restarted
+  shell: /etc/init.d/supervisor force-stop && /etc/init.d/supervisor stop && /etc/init.d/supervisor start
   become: true
