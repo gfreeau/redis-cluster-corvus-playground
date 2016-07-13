@@ -12,6 +12,14 @@
     template: src=supervisor dest=/etc/supervisor/conf.d/corvus.conf
     notify: restart supervisor
 
+  - name: Update main supervisor config
+    lineinfile:
+      dest=/etc/supervisor/supervisord.conf
+      regexp="^minfds="
+      insertafter="^\[supervisord\]"
+      line="minfds={{ corvus_max_open_files}}"
+    notify: restart supervisor
+
   - name: Start supervisor
     service: name=supervisor state=started enabled=yes
 
