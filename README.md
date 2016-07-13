@@ -138,3 +138,16 @@ If you need to need to reset your cluster, have a look at http://redis.io/comman
 If you need to add nodes, remove nodes etc, start here: http://redis.io/topics/cluster-tutorial
 
 Each redis node has the `redis-trib.rb` executeable.
+
+Debugging
+---------
+
+You may run into errors after the VMs have been shut down. These are usually fixed by rerunning provision so that ansible has updated ip addresses and forcing fact gathering.
+
+```
+vagrant provision
+```
+
+```
+cd ansible
+ansible-playbook gather_facts.yml
