@@ -2,21 +2,21 @@
 # vi: set ft=ruby :
 
 # ---- Configuration variables ----
-
+CPUS              = 1
 RAM               = 256            # Default memory size in MB
 IP_POOL           = "10.55.0.0/24" # IP address pool for communication with/between VMs
 
 BOX               = "debian/jessie64" # Source: https://atlas.hashicorp.com/debian/boxes/jessie64
 
 HOSTS = {
-    "redistest"  => [BOX, RAM],
-    "corvus1"    => [BOX, RAM],
-    "redis1"     => [BOX, RAM],
-    "redis2"     => [BOX, RAM],
-    "redis3"     => [BOX, RAM],
-    "redis4"     => [BOX, RAM],
-    "redis5"     => [BOX, RAM],
-    "redis6"     => [BOX, RAM],
+    "redistest"  => [BOX, CPUS, RAM],
+    "corvus1"    => [BOX, CPUS, RAM],
+    "redis1"     => [BOX, CPUS, RAM],
+    "redis2"     => [BOX, CPUS, RAM],
+    "redis3"     => [BOX, CPUS, RAM],
+    "redis4"     => [BOX, CPUS, RAM],
+    "redis5"     => [BOX, CPUS, RAM],
+    "redis6"     => [BOX, CPUS, RAM],
 }
 
 GROUPS = {
@@ -43,13 +43,14 @@ Vagrant.configure(2) do |config|
   end
 
   HOSTS.each do | (name, cfg) |
-    box, ram = cfg
+    box, cpus, ram = cfg
 
     config.vm.define name do |machine|
       machine.vm.box   = box
       machine.vm.guest = :debian
 
       machine.vm.provider "virtualbox" do |vbox|
+        vbox.cpus = cpus
         vbox.memory = ram
       end
 

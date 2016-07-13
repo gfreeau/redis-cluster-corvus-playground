@@ -26,6 +26,8 @@ vagrant plugin install vagrant-vai
 vagrant up
 ```
 
+You can modify the VM cpu and ram in the vagrant file. By default each VM has only 1 CPU and only 256mb of ram.
+
 3. Provision redis cluster nodes
 --------------------------------
 
