@@ -6,22 +6,6 @@
       - build-essential
       - autoconf
       - git
-      - supervisor
-
-  - name: Upload supervisor config
-    template: src=supervisor dest=/etc/supervisor/conf.d/corvus.conf
-    notify: restart supervisor
-
-  - name: Update main supervisor config
-    lineinfile:
-      dest=/etc/supervisor/supervisord.conf
-      regexp="^minfds="
-      insertafter="^\[supervisord\]"
-      line="minfds={{ corvus_max_open_files}}"
-    notify: restart supervisor
-
-  - name: Start supervisor
-    service: name=supervisor state=started enabled=yes
 
   - name: Create corvus directory
     file: path={{ corvus_install_path }} state=directory owner={{ corvus_user }} group={{ corvus_group }}
@@ -31,7 +15,6 @@
     with_items:
       - { name: 'net.core.somaxconn', value: '1024' }
       - { name: 'net.ipv4.tcp_tw_recycle', value: '1' }
-    notify: restart supervisor
 
   become: true
 
@@ -54,11 +37,13 @@
   with_items:
     - conf
     - bin
-    - log
 
 - name: Install new binary
   copy: src='{{ corvus_src_path }}/src/corvus' dest='{{ corvus_install_path }}/bin/corvus' remote_src=True mode=0755
+  notify: restart corvus
 
 - name: Upload corvus config
   template: src=corvus.conf dest='{{ corvus_install_path }}/conf'
-  notify: restart supervisor
+  notify: restart corvus
+
+- include: service.yml

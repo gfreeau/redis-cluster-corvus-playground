@@ -144,6 +144,12 @@ Each redis node has the `redis-trib.rb` executeable.
 Debugging
 ---------
 
+Corvus logs are available in `/var/log/syslog` or by using journalctl:
+
+```
+sudo journalctl -u corvus.service
+```
+
 You may run into errors after the VMs have been shut down. These are usually fixed by rerunning provision so that ansible has updated ip addresses and forcing fact gathering.
 
 ```

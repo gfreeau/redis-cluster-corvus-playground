@@ -1,0 +1,13 @@
+[Unit]
+Description=A redis 3 cluster proxy (https://github.com/eleme/corvus)
+After=network.target
+
+[Service]
+Type=simple
+User={{ corvus_user }}
+ExecStart={{ corvus_install_path }}/bin/corvus {{ corvus_install_path }}/conf/corvus.conf
+Restart=on-failure
+LimitNOFILE={{ corvus_max_open_files}}
+
+[Install]
+WantedBy=multi-user.target

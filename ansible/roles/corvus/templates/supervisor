@@ -1,8 +1,0 @@
-[program:corvus]
-user={{ corvus_user }}
-command={{ corvus_install_path }}/bin/corvus {{ corvus_install_path }}/conf/corvus.conf
-numprocs=1
-autostart=true
-autorestart=true
-redirect_stderr=true
-stdout_logfile={{ corvus_install_path }}/log/corvus.log

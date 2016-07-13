@@ -1,0 +1,13 @@
+---
+- block:
+  - name: Upload corvus systemd service
+    template: src=corvus.service dest=/lib/systemd/system/
+    register: corvus_systemd_service
+
+  - shell: systemctl daemon-reload
+    when: corvus_systemd_service.changed
+
+  - name: Start corvus service
+    service: name=corvus state=started enabled=yes
+
+  become: true

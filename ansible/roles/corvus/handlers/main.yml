@@ -1,6 +1,4 @@
 ---
-# there is a problem with systemd restart and supervisor in the current version
-# http://stackoverflow.com/questions/32738415/supervisor-fails-to-restart-half-of-the-time
-- name: restart supervisor
-  shell: /etc/init.d/supervisor force-stop && /etc/init.d/supervisor stop && /etc/init.d/supervisor start
+- name: restart corvus
+  service: name=corvus state=restarted
   become: true
