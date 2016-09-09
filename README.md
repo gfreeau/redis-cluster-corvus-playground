@@ -137,6 +137,15 @@ redis1:6379>
 ```
 
 If you need to need to reset your cluster, have a look at http://redis.io/commands/cluster-reset.
+
+You can use ansible ad hoc commands to reset the cluster:
+
+```
+cd ansible
+ansible redis -m shell -a 'redis-cli FLUSHALL'
+ansible redis -m shell -a 'redis-cli CLUSTER RESET'
+```
+
 If you need to add nodes, remove nodes etc, start here: http://redis.io/topics/cluster-tutorial
 
 Each redis node has the `redis-trib.rb` executeable.
